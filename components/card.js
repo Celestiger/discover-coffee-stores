@@ -6,8 +6,8 @@ import styles from './card.module.css';
 
 const Card = (props) => {
   return (
-    <Link href={props.href}>
-      <div className={styles.cardLink}>
+    <Link legacyBehavior href={props.href}>
+      <a className={styles.cardLink}>
         <div className={cls('glass', styles.container)}>
 
           <div className={styles.cardHeadderWrapper}>
@@ -20,10 +20,11 @@ const Card = (props) => {
               src={props.imgUrl}
               width={260}
               height={160}
+              alt={props.name}
             />
           </div>
         </div>
-      </div>
+      </a>
     </Link>
   );
 };

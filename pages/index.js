@@ -27,14 +27,35 @@ export default function Home() {
           handleOnClick={handleOnBannerBtnClick}
         />
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={400} />
+          <Image src="/static/hero-image.png" width={700} height={400} alt="hero image"/>
         </div>
 
-        <Card
-          name="Dope Coffee"
-          imgUrl="/static/hero-image.png"
-          href="/coffee-store/dope-coffee"
-        />
+        <div className={styles.cardLayout}>
+          <Card
+            name="Dope Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/dope-coffee"
+            className={styles.card}
+          />
+          <Card
+            name="Dope Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/dope-coffee"
+            className={styles.card}
+          />
+          <Card
+            name="Dope Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/dope-coffee"
+            className={styles.card}
+          />
+          <Card
+            name="Dope Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/dope-coffee"
+            className={styles.card}
+          />
+        </div>
       </main>
     </>
   );
