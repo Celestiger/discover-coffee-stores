@@ -18,7 +18,6 @@ export const getStaticProps = async (ctx) => {
 };
 
 export default function Home(props) {
-  console.log('home props', props);
   const handleOnBannerBtnClick = () => {
     console.log('Hi banner button clicked');
   };
