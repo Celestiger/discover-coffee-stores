@@ -5,14 +5,14 @@ import styles from '@/styles/Home.module.css';
 import Banner from '../components/banner';
 import Card from '@/components/card';
 
-import coffeeStoresData from '@/data/coffee-stores.json';
+import { fetchCoffeeStores } from '../lib/coffee-stores';
 
 export const getStaticProps = async (ctx) => {
-  // const { data } = await  // your fetch function here
+  const coffeeStores = await fetchCoffeeStores();
 
   return {
     props: {
-      coffeeStores: coffeeStoresData,
+      coffeeStores,
     },
   };
 };
@@ -38,6 +38,7 @@ export default function Home(props) {
         />
         <div className={styles.heroImage}>
           <Image
+            priority
             src="/static/hero-image.png"
             width={700}
             height={400}
@@ -54,7 +55,10 @@ export default function Home(props) {
                   <Card
                     key={coffeeStore.id}
                     name={coffeeStore.name}
-                    imgUrl={coffeeStore.imgUrl}
+                    imgUrl={
+                      coffeeStore.imgUrl ||
+                      'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+                    }
                     href={`/coffee-store/${coffeeStore.id}`}
                     className={styles.card}
                   />
