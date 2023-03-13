@@ -24,7 +24,6 @@ export default function Home(props) {
   const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
 
-  // const [coffeeStores, setCoffeeStores] = useState('');
   const [coffeeStoresError, setCoffeeStoresError] = useState(null);
 
   const { dispatch, state } = useContext(StoreContext);
@@ -46,7 +45,7 @@ export default function Home(props) {
           });
           setCoffeeStoresError('');
         } catch (error) {
-          console.log({ error });
+          console.error({ error });
           setCoffeeStoresError(error.message);
         }
       }

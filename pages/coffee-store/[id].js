@@ -8,7 +8,8 @@ import cls from 'classnames';
 import { fetchCoffeeStores } from '@/lib/coffee-stores';
 import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '@/store/store-context';
-import { isEmpty } from '@/utils';
+import { fetcher, isEmpty } from '@/utils';
+import useSWR from 'swr';
 
 export const getStaticProps = async (staticProps) => {
   const params = staticProps.params;
@@ -71,7 +72,6 @@ const CoffeeStore = (initialProps) => {
       });
 
       const dbCoffeeStore = await response.json();
-      console.log({ dbCoffeeStore });
     } catch (err) {
       console.error('Error creating coffee store', err);
     }
@@ -96,9 +96,42 @@ const CoffeeStore = (initialProps) => {
 
   const { name, imgUrl, address, neighbourhood } = coffeeStore;
 
-  const handleUpvoteButton = () => {
-    console.log('handle upvote');
+  const [votingCount, setVotingCount] = useState(0);
+
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].voting);
+    }
+  }, [data]);
+
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch('/api/favoriteCoffeeStoreById', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+
+      const dbCoffeeStore = await response.json();
+      if (dbCoffeeStore && dbCoffeeStore.length) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (err) {
+      console.error('Error upvoting the coffee store', err);
+    }
   };
+
+  if (error) {
+    return <div>Something went wrong retrieving coffee store page</div>;
+  }
 
   return (
     <div className={styles.layout}>
@@ -160,7 +193,7 @@ const CoffeeStore = (initialProps) => {
               height="24"
               alt="star"
             />
-            <p className={styles.text}>1</p>
+            <p className={styles.text}>{votingCount}</p>
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
