@@ -41,13 +41,11 @@ export const getStaticPaths = async (ctx) => {
 const CoffeeStore = (initialProps) => {
   const router = useRouter();
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
-
   const id = router.query.id;
 
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [coffeeStore, setCoffeeStore] = useState(
+    initialProps.coffeeStore || {}
+  );
 
   const {
     state: { coffeeStores },
@@ -92,9 +90,14 @@ const CoffeeStore = (initialProps) => {
       // SSG
       handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }, [id, initialProps.coffeeStore]);
+  }, [id, initialProps, initialProps.coffeeStore, coffeeStores]);
 
-  const { name, imgUrl, address, neighbourhood } = coffeeStore;
+  const {
+    name = '',
+    imgUrl = '',
+    address = '',
+    neighbourhood = '',
+  } = coffeeStore;
 
   const [votingCount, setVotingCount] = useState(0);
 
@@ -106,6 +109,10 @@ const CoffeeStore = (initialProps) => {
       setVotingCount(data[0].voting);
     }
   }, [data]);
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
 
   const handleUpvoteButton = async () => {
     try {
